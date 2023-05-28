@@ -18,32 +18,61 @@ def add_leading_zeros(rgb):
         str_hex = '000' + str_hex[0:1]
     return str_hex
 
+import os
+from array import array
+from ctypes import *
+from UM.Platform import Platform
 def add_screenshot_str(img, width, height, img_type):
+    with open(r'D:\Desktop\N3\bin\new_size.txt', 'w') as f:
+        f.write(f'w: {width}, h: {height}')
+    if Platform.isOSX():
+        pDll = CDLL(os.path.join(os.path.dirname(__file__), "libColPic.dylib"))
+    elif Platform.isLinux():
+        pDll = CDLL(os.path.join(os.path.dirname(__file__), "libColPic.so"))
+    else:
+        pDll = CDLL(os.path.join(os.path.dirname(__file__), "ColPic_X64.dll"))
+
     result = ""
-    b_image = img.scaled(width, height, QtCore.Qt.AspectRatioMode.KeepAspectRatio)
+    b_image = img.scaled(width, height, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
     img_size = b_image.size()
-    result += img_type
-    datasize = 0
-    for i in range(img_size.height()):
-        for j in range(img_size.width()):
-            pixel_color = b_image.pixelColor(j, i)
-            r = pixel_color.red() >> 3
-            g = pixel_color.green() >> 2
-            b = pixel_color.blue() >> 3
-            rgb = (r << 11) | (g << 5) | b
-            str_hex = add_leading_zeros(rgb)
-            if str_hex[2:4] != '':
-                result += str_hex[2:4]
-                datasize += 2
-            if str_hex[0:2] != '':
-                result += str_hex[0:2]
-                datasize += 2
-            if datasize >= 50:
-                datasize = 0
-        # if i != img_size.height() - 1:
-        result += '\rM10086 ;'
-        if i == img_size.height() - 1:
-            result += "\r"
+    color16 = array('H')
+    try:
+        # Logger.log("d", "try == ")
+        for i in range(img_size.height()):
+            for j in range(img_size.width()):
+                pixel_color = b_image.pixelColor(j, i)
+                r = pixel_color.red() >> 3
+                g = pixel_color.green() >> 2
+                b = pixel_color.blue() >> 3
+                rgb = (r << 11) | (g << 5) | b
+                color16.append(rgb)
+
+        # int ColPic_EncodeStr(U16* fromcolor16, int picw, int pich, U8* outputdata, int outputmaxtsize, int colorsmax);
+        fromcolor16 = color16.tobytes()
+        outputdata = array('B',[0]*img_size.height()*img_size.width()).tobytes()
+        resultInt = pDll.ColPic_EncodeStr(fromcolor16, img_size.height(), img_size.width(), outputdata, img_size.height()*img_size.width(), 1024)
+
+        data0 = str(outputdata).replace('\\x00', '')
+        data1 = data0[2:len(data0) - 2]
+        eachMax = 1024 - 8 - 1
+        maxline = int(len(data1)/eachMax)
+        appendlen = eachMax - 3 - int(len(data1)%eachMax)
+
+        for i in range(len(data1)):
+            if i == maxline*eachMax:
+                result += '\r;' + img_type + data1[i]
+            elif i == 0:
+                result += img_type + data1[i]
+            elif i%eachMax == 0:
+                result += '\r' + img_type + data1[i]
+            else:
+                result += data1[i]
+        result += '\r;'
+        for j in range(appendlen):
+            result += '0'
+
+    except Exception as e:
+        Logger.log("d", "Exception == " + str(e))
     return result
 
 def take_screenshot():
