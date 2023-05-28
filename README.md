@@ -1,3 +1,22 @@
+# MKS WiFi plugin with N3P thumbnail support #
+Tested on Neptune 3 Pro with Cura5.3.1 (should work on Plus/Max)
+
+## How to install ##
+If you already installed original MKS WiFi Plugin jump to instruction 3
+
+1. Install MKS WiFi plugin on Cura Marketplace
+2. Restart Cura (Required)
+3. Download ELEGOO Cura **$\color{#ff0000}{\textsf{Windows version}}$** [here](https://www.elegoo.com/en-jp/pages/3d-printing-user-support)
+4. Extract binary
+5. copy binary to plugin folder
+6. Download *.py
+7. copy *.py to plugin folder
+8. change plugin setting
+
+<br><br><br><br>
+Original readme bellow
+
+---
 # MKS WiFi plugin #
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Jeredian_mks-wifi-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=Jeredian_mks-wifi-plugin)
