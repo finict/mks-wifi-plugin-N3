@@ -1,17 +1,38 @@
 # MKS WiFi plugin with N3P thumbnail support #
-Tested on Neptune 3 Pro with Cura5.3.1 (should work on Plus/Max)
+Tested on `Neptune 3 Pro` with `Cura5.3.1` and `MKSWiFiPlugin1.4.2` (should work on Plus/Max)
+
+![N3P](https://github.com/finict/mks-wifi-plugin-N3/assets/16084632/d0123695-6264-4e49-860a-ba05b2224e5b)  
+Model by [3dbenchy](https://www.3dbenchy.com/download/)
 
 ## How to install ##
 If you already installed original MKS WiFi Plugin jump to instruction 3
 
-1. Install MKS WiFi plugin on Cura Marketplace
+1. Install MKS WiFi plugin at Cura Marketplace
 2. Restart Cura (Required)
-3. Download ELEGOO Cura **$\color{#ff0000}{\textsf{Windows version}}$** [here](https://www.elegoo.com/en-jp/pages/3d-printing-user-support)
-4. Extract binary
-5. copy binary to plugin folder
-6. Download *.py
-7. copy *.py to plugin folder
-8. change plugin setting
+3. Download ELEGOO Cura **$\color{#ff0000}{\textsf{Windows version}}$** [here](https://www.elegoo.com/en-jp/pages/3d-printing-user-support) (Slicing Software section)
+4. Open downloaded exe binary **$\color{#ff0000}{\textsf{as archive}}$** use with 7zip etc.
+5. find specific binary in `[ARCHIVE]/plugins/MKS Plugin` folder
+    1. Windows `ColPic_X64.dll`
+    2. Linux `libColPic.so`
+    3. Mac `libColPic.dylib`
+6. Copy the above binary to plugin folder in Cura
+    1. Windows `%appdata%/cura/[VERSION]/plugins/MKSWiFiPlugin/MKSWiFiPlugin`
+    2. Linux `-`
+    3. Mac `-`
+8. Download [MKSPreview.py](https://github.com/finict/mks-wifi-plugin-N3/releases/latest) in this repository
+9. Copy the MKSPreview.py to plugin folder in Cura (Overwrite)
+10. change plugin setting `Settings > Printer > Manage Printers`
+    1. Select `Neptune 3 Pro/Plus/Max`
+    2. Push `MKS WiFi Plugin` button
+    3. Check the `MKS WiFi Plugin is active for this printer`
+    4. Move `Preview settings` tab
+        1. Check `Screenshot support`
+        2. Printer model to `Custom`
+        3. Simage to `160`
+        4. Gimage to `200`
+11. Restart Cura
+
+Have a nice print!
 
 <br><br><br><br>
 Original readme bellow
